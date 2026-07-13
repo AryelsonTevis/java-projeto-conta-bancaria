@@ -17,7 +17,7 @@ public class Menu {
     private static ArrayList<Conta> accounts = new ArrayList<>();//Cria uma lista de array (que cresce conforme o nescessario)
     private static int totalAccounts = 0;
     private static Scanner input = new Scanner(System.in);
-    
+
     public static boolean menu() {
 
         boolean running = true;
@@ -44,11 +44,11 @@ public class Menu {
     public static void accountMenu(Conta c2) {
         int choice = 0;
         float money = 0;
-        
+
         do {
 
             System.out.println("\nDigite a opção de sua escolha.");
-            System.out.println(" 1- Saque\n 2- Deposito\n 3- Consultar saldo\n 4- Dados da conta\n 5- Extrato\n 0-Sair da conta");
+            System.out.println(" 1- Saque\n 2- Deposito\n 3- Consultar saldo\n 4- Dados da conta\n 5- Extrato\n 6-Fechar conta\n 0-Sair da conta");
             choice = input.nextInt();
 
             switch (choice) {
@@ -77,6 +77,9 @@ public class Menu {
                     c2.getStatement();
                     System.out.printf("Saldo atual: R$ %.2f\n", c2.getBalance());
                     break;
+                case 6:
+                    c2.closeAccount();
+                    break;
                 default:
                     System.out.println("\nOpção inválida!");
             }
@@ -84,8 +87,6 @@ public class Menu {
     }
 
     public static void createAccont() {
-        Conta c1 = new Conta();
-
         input.nextLine();
         System.out.print("Digite o nome de usuário: ");
         String name = input.nextLine();
@@ -93,8 +94,11 @@ public class Menu {
         String cpf = input.nextLine();
         System.out.print("Digite a senha somente numeros: ");
         int password = Integer.parseInt(input.nextLine());
-        c1.setAccount(name, cpf, password);
+        System.out.println("CC- Conta corrente, CP- Conta poupança");
+        String type = input.nextLine().toUpperCase();
+        Conta c1 = new Conta(name, cpf, password, type);
         accounts.add(c1);
+        c1.setAccountNumber(accounts.size());
         accountMenu(accounts.getLast());
     }
 
