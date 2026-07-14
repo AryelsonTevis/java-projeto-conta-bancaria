@@ -48,7 +48,7 @@ public class Menu {
         do {
 
             System.out.println("\nDigite a opção de sua escolha.");
-            System.out.println(" 1- Saque\n 2- Deposito\n 3- Consultar saldo\n 4- Dados da conta\n 5- Extrato\n 6-Fechar conta\n 0-Sair da conta");
+            System.out.println(" 1- Saque\n 2- Deposito\n 3- Consultar saldo\n 4- Dados da conta\n 5- Extrato\n 6- Fechar conta\n 7- Reabrir conta\n 0- Sair da conta");
             choice = input.nextInt();
 
             switch (choice) {
@@ -78,7 +78,10 @@ public class Menu {
                     System.out.printf("Saldo atual: R$ %.2f\n", c2.getBalance());
                     break;
                 case 6:
-                    c2.closeAccount();
+                    System.out.println(c2.closeAccount());;
+                    break;
+                case 7:
+                    System.out.println(c2.reopenAccount());
                     break;
                 default:
                     System.out.println("\nOpção inválida!");

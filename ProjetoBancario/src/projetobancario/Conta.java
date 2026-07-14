@@ -53,7 +53,7 @@ public class Conta {
         this.type = type;
     }
 
-    public boolean getStatus() {
+    public boolean isStatus() {
         return this.status;
     }
 
@@ -124,24 +124,20 @@ public class Conta {
         return r;
     }
 
-    public void payMonthly() {
-        float pay = 0;
-        if (getType() == "CC") {
-            pay = 12;
-            this.bankStatement.add("Coprança de manutenção: " + pay);
-        } else if (getType() == "CP") {
-            pay = 20;
-            this.bankStatement.add("Coprança de manutenção: " + pay);
-
+    public String reopenAccount() {
+        String r;
+        if (isStatus()) {
+            r = "Conta já ativa";
+        } else {
+            r = "Conta reaberta";
         }
-        setBalance(getBalance() - pay);
-
+        return r;
     }
 
     public String getAccount() {
 
-        return String.format("\nNúmero da conta:" + getAccountNumber() + "\nNome de usuario: " + getName() + "\nCpf: " + getCpf() + "\nTipo de conta: " + getType()
-                + "\nStatus da conta: " + getStatus() + "\nSaldo: R$ %.2f", getBalance());
+        return String.format("\n---------------------------------\nNúmero da conta:" + getAccountNumber() + "\nNome de usuario: " + getName() + "\nCpf: " + getCpf() + "\nTipo de conta: " + getType()
+                + "\nStatus da conta: " + isStatus() + "\nSaldo: R$ %.2f\n---------------------------------",getBalance());
     }
 
     public void getStatement() {
@@ -158,7 +154,7 @@ public class Conta {
 
     public String deposit(float money) {
         String r;
-        if (getStatus()) {
+        if (isStatus()) {
             if (money > 0) {
                 setBalance(getBalance() + money);
                 r = "Depósito efetuado com sucesso!";
@@ -168,7 +164,7 @@ public class Conta {
                 r = "Valor inserido invalido insira um valor maior que 0,00";
             }
         } else {
-            r = "Impossível depositar";
+            r = "Impossível depositar, conta fechada";
         }
 
         return r;
@@ -176,8 +172,8 @@ public class Conta {
 
     public String withdrawMoney(float money) {
         String r;
-        if (!getStatus()) {
-            r = "Impossível sacar";
+        if (!isStatus()) {
+            r = "Impossível sacar, conta fechada";
         } else if (getBalance() < money) {
             r = ("Saldo insuficiente!");
         } else if ((money <= getBalance()) && (money > 0)) {
@@ -190,4 +186,23 @@ public class Conta {
         }
         return r;
     }
+
+    public void payMonthly() {
+        float pay = 0;
+        if (isStatus()) {
+            if (getType() == "CC") {
+                pay = 12;
+                this.bankStatement.add("Coprança de manutenção: " + pay);
+            } else if (getType() == "CP") {
+                pay = 20;
+                this.bankStatement.add("Coprança de manutenção: " + pay);
+
+            }
+            setBalance(getBalance() - pay);
+        }else{
+            System.out.println("Impossível pagar uma conta fechada!");
+        }
+
+    }
+
 }
